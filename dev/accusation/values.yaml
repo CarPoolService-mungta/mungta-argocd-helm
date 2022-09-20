@@ -24,7 +24,7 @@ config:
   dbHost: mungta-accusations-db.mysql.database.azure.com
 
 nameOverride: ""
-fullnameOverride: ""
+fullnameOverride: accusation
 
 service:
   type: ClusterIP

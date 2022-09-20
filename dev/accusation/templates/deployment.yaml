@@ -64,5 +64,5 @@ spec:
   strategy:
     blueGreen:
       activeService: {{ include "accusation.fullname" . }}
-      previewService: {{ include "accusation.fullname" . }}-new
+      #previewService:
       autoPromotionEnabled: true
