@@ -26,6 +26,17 @@ config:
 nameOverride: ""
 fullnameOverride: accusation
 
+health:
+  port: 8080
+  liveness:
+    path: /actuator/health/liveness
+    initialDelaySeconds: 30
+    periodSeconds: 5
+  readiness:
+    path: /actuator/health/readiness
+    initialDelaySeconds: 30
+    periodSeconds: 5
+
 service:
   type: ClusterIP
   port: 8080
