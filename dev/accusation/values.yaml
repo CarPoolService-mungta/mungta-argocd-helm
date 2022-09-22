@@ -27,11 +27,9 @@ image:
 
 resources:
   requests:
-    cpu: 100m
-    memory: 128Mi
+    cpu: 200m
   limits:
-    cpu: 300m
-    memory: 128Mi
+    cpu: 500m
 
 env:
   configMap:
