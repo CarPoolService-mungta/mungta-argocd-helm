@@ -3,8 +3,6 @@ kind: Rollout
 metadata:
   name: {{ include "accusation.fullname" . }}
   namespace: {{ .Values.namespace }}
-  labels:
-    {{- include "accusation.labels" . | nindent 4 }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
@@ -12,24 +10,45 @@ spec:
   revisionHistoryLimit: {{ .Values.revisionHistoryLimit }}
   selector:
     matchLabels:
-      {{- include "accusation.selectorLabels" . | nindent 6 }}
+      app: {{ .Values.selectorLabels }}
   template:
     metadata:
       labels:
-        {{- include "accusation.selectorLabels" . | nindent 8 }}
+        app: {{ .Values.selectorLabels }}
     spec:
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          # livenessProbe:
-          #   httpGet:
-          #     path: /
-          #     port: http
-          # readinessProbe:
-          #   httpGet:
-          #     path: /
-          #     port: http
+          resources:
+            requests:
+              cpu: {{ .Values.resources.requests.cpu }}
+              memory: {{ .Values.resources.requests.memory }}
+            limits:
+              cpu: {{ .Values.resources.limits.cpu }}
+              memory: {{ .Values.resources.limits.memory }}
+          # args:
+          #   - /bin/sh
+          #   - -c
+          #   - touch /tmp/healthy; sleep 30; rm -rf /tmp/healthy; sleep 600
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.livenessProbe.path }}
+              port: {{ .Values.livenessProbe.port }}
+            # exec:
+            #   command:
+            #     - cat
+            #     - /tmp/healthy
+            initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.readinessProbe.path }}
+              port: {{ .Values.readinessProbe.port }}
+            initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
+          securityContext:
+            privileged: {{ .Values.securityContext.privileged }}
           env:
             - name: LOG_LEVEL
               valueFrom:
@@ -65,4 +84,4 @@ spec:
     blueGreen:
       activeService: {{ include "accusation.fullname" . }}
       #previewService:
-      autoPromotionEnabled: true
+      autoPromotionEnabled: {{ .Values.blueGreen.autoPromotion }}
