@@ -1,0 +1,82 @@
+# Default values for accusation.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+namespace: mungta
+
+nameOverride: ""
+fullnameOverride: accusation
+
+selectorLabels: accusation
+
+replicaCount: 1
+revisionHistoryLimit: 2
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+image:
+  repository: mungtaregistry.azurecr.io/mungta/dev/accusation-service
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "15"
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 300m
+    memory: 128Mi
+
+env:
+  configMap:
+    name: accusation-config
+  secret:
+    name: mungta-credentials
+
+config:
+  logLevel: debug
+  dbHost: mungta-accusations-db.mysql.database.azure.com
+
+livenessProbe:
+  path: /actuator/health/liveness
+  port: 8080
+  initialDelaySeconds: 120
+  periodSeconds: 5
+readinessProbe:
+  path: /actuator/health/readiness
+  port: 8080
+  initialDelaySeconds: 5
+  periodSeconds: 5
+
+securityContext:
+  privileged: false
+
+blueGreen:
+  autoPromotion: true
+
+service:
+  type: ClusterIP
+  port: 8080
+
+ingress:
+  enabled: false
+  className: ""
+  annotations:
+    {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: chart-example.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
