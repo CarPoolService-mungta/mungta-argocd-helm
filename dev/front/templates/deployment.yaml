@@ -29,6 +29,6 @@ spec:
             privileged: {{ .Values.securityContext.privileged }}
   strategy:
     blueGreen:
-      activeService: {{ include "accusation.fullname" . }}
+      activeService: {{ include "front.fullname" . }}
       #previewService:
       autoPromotionEnabled: {{ .Values.blueGreen.autoPromotion }}
