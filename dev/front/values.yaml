@@ -20,7 +20,7 @@ autoscaling:
   # targetMemoryUtilizationPercentage: 80
 
 image:
-  repository: ungtaregistry.azurecr.io/mungta/dev/mungta-front
+  repository: mungtaregistry.azurecr.io/mungta/dev/mungta-front
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: "latest"
