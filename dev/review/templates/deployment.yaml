@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Rollout
 metadata:
-  name: {{ include "accusation.fullname" . }}
+  name: {{ include "review.fullname" . }}
   namespace: {{ .Values.namespace }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
@@ -80,6 +80,6 @@ spec:
                   key: mail-password
   strategy:
     blueGreen:
-      activeService: {{ include "accusation.fullname" . }}
+      activeService: {{ include "review.fullname" . }}
       #previewService:
       autoPromotionEnabled: {{ .Values.blueGreen.autoPromotion }}
