@@ -25,9 +25,20 @@ spec:
   gateways:
     - {{ .Values.env.gatewayName }}
   http:
-    - name: "mungta-front-route"
+    - match:
+        - uri:
+            prefix: /api
       route:
+        - destination:
+            host: gateway
+    - route:
         - destination:
             host: {{ .Values.istioIngress.front.host }}
             port:
               number: {{ .Values.istioIngress.front.port }}
+    # - name: "mungta-front-route"
+    #   route:
+    #     - destination:
+    #         host: {{ .Values.istioIngress.front.host }}
+    #         port:
+    #           number: {{ .Values.istioIngress.front.port }}
