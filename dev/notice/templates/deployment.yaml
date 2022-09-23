@@ -1,61 +1,85 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
 metadata:
   name: {{ include "notice.fullname" . }}
-  labels:
-    {{- include "notice.labels" . | nindent 4 }}
+  namespace: {{ .Values.namespace }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
+  revisionHistoryLimit: {{ .Values.revisionHistoryLimit }}
   selector:
     matchLabels:
-      {{- include "notice.selectorLabels" . | nindent 6 }}
+      app: {{ .Values.selectorLabels }}
   template:
     metadata:
-      {{- with .Values.podAnnotations }}
-      annotations:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
       labels:
-        {{- include "notice.selectorLabels" . | nindent 8 }}
+        app: {{ .Values.selectorLabels }}
     spec:
-      {{- with .Values.imagePullSecrets }}
-      imagePullSecrets:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      serviceAccountName: {{ include "notice.serviceAccountName" . }}
-      securityContext:
-        {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
         - name: {{ .Chart.Name }}
-          securityContext:
-            {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          ports:
-            - name: http
-              containerPort: 80
-              protocol: TCP
+          resources:
+            requests:
+              cpu: {{ .Values.resources.requests.cpu }}
+            limits:
+              cpu: {{ .Values.resources.limits.cpu }}
+          # args:
+          #   - /bin/sh
+          #   - -c
+          #   - touch /tmp/healthy; sleep 30; rm -rf /tmp/healthy; sleep 600
           livenessProbe:
             httpGet:
-              path: /
-              port: http
+              path: {{ .Values.livenessProbe.path }}
+              port: {{ .Values.livenessProbe.port }}
+            # exec:
+            #   command:
+            #     - cat
+            #     - /tmp/healthy
+            initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
           readinessProbe:
             httpGet:
-              path: /
-              port: http
-          resources:
-            {{- toYaml .Values.resources | nindent 12 }}
-      {{- with .Values.nodeSelector }}
-      nodeSelector:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.affinity }}
-      affinity:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.tolerations }}
-      tolerations:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
+              path: {{ .Values.readinessProbe.path }}
+              port: {{ .Values.readinessProbe.port }}
+            initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
+          securityContext:
+            privileged: {{ .Values.securityContext.privileged }}
+          env:
+            - name: LOG_LEVEL
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.env.configMap.name }}
+                  key: log-level
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.env.configMap.name }}
+                  key: db-host
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.env.secret.name }}
+                  key: db-username
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.env.secret.name }}
+                  key: db-password
+            - name: MAIL_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.env.secret.name }}
+                  key: mail-username
+            - name: MAIL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.env.secret.name }}
+                  key: mail-password
+  strategy:
+    blueGreen:
+      activeService: {{ include "notice.fullname" . }}
+      #previewService:
+      autoPromotionEnabled: {{ .Values.blueGreen.autoPromotion }}
