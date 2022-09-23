@@ -30,15 +30,11 @@ spec:
             prefix: /api
       route:
         - destination:
-            host: gateway
+            host: {{ .Values.istioIngress.gateway.host }}
+            port:
+              number: {{ .Values.istioIngress.gateway.port }}
     - route:
         - destination:
             host: {{ .Values.istioIngress.front.host }}
             port:
               number: {{ .Values.istioIngress.front.port }}
-    # - name: "mungta-front-route"
-    #   route:
-    #     - destination:
-    #         host: {{ .Values.istioIngress.front.host }}
-    #         port:
-    #           number: {{ .Values.istioIngress.front.port }}
