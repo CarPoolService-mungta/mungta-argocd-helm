@@ -20,6 +20,9 @@ istioIngress:
   front:
     host: mungta-front
     port: 3000
+  gateway:
+    host: gateway
+    port: 8080
 
 nameOverride: ""
 fullnameOverride: ""

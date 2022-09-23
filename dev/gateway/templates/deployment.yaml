@@ -5,7 +5,6 @@ metadata:
   namespace: {{ .Values.namespace }}
   labels:
     app: {{ .Values.selectorLabels }}
-    version: v1
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
@@ -14,12 +13,10 @@ spec:
   selector:
     matchLabels:
       app: {{ .Values.selectorLabels }}
-      version: v1
   template:
     metadata:
       labels:
         app: {{ .Values.selectorLabels }}
-        version: v1
     spec:
       containers:
         - name: {{ .Chart.Name }}
