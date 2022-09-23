@@ -5,7 +5,7 @@
 namespace: mungta
 
 env:
-  gatewayName: mungta-ingress-gateway
+  gatewayName: mungta-ingressgateway
   secretName: mungta-credentials
 
 config:
