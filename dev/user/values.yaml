@@ -1,51 +1,74 @@
-# Default values for user.
+# Default values for accusation.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+namespace: mungta
+
+nameOverride: ""
+fullnameOverride: user
+
+selectorLabels: user
+
 replicaCount: 1
+revisionHistoryLimit: 2
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
 
 image:
-  repository: nginx
+  repository: mungtaregistry.azurecr.io/mungta/dev/user-service
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: ""
+  tag: "11"
 
-imagePullSecrets: []
-nameOverride: ""
-fullnameOverride: ""
+resources:
+  requests:
+    cpu: 200m
+  limits:
+    cpu: 500m
 
-serviceAccount:
-  # Specifies whether a service account should be created
-  create: true
-  # Annotations to add to the service account
-  annotations: {}
-  # The name of the service account to use.
-  # If not set and create is true, a name is generated using the fullname template
-  name: ""
+env:
+  configMap:
+    name: user-config
+  secret:
+    name: mungta-credentials
 
-podAnnotations: {}
+config:
+  logLevel: debug
+  dbHost: mungta-user-db.mysql.database.azure.com
 
-podSecurityContext: {}
-  # fsGroup: 2000
+livenessProbe:
+  path: /actuator/health/liveness
+  port: 8080
+  initialDelaySeconds: 120
+  periodSeconds: 60
+readinessProbe:
+  path: /actuator/health/readiness
+  port: 8080
+  initialDelaySeconds: 15
+  periodSeconds: 60
 
-securityContext: {}
-  # capabilities:
-  #   drop:
-  #   - ALL
-  # readOnlyRootFilesystem: true
-  # runAsNonRoot: true
-  # runAsUser: 1000
+securityContext:
+  privileged: false
+
+blueGreen:
+  autoPromotion: true
 
 service:
   type: ClusterIP
-  port: 80
+  port: 8080
 
 ingress:
   enabled: false
   className: ""
-  annotations: {}
+  annotations:
+    {}
     # kubernetes.io/ingress.class: nginx
-    # kubernetes.io/tls-acme: "true"
+  # kubernetes.io/tls-acme: "true"
   hosts:
     - host: chart-example.local
       paths:
@@ -55,28 +78,3 @@ ingress:
   #  - secretName: chart-example-tls
   #    hosts:
   #      - chart-example.local
-
-resources: {}
-  # We usually recommend not to specify default resources and to leave this as a conscious
-  # choice for the user. This also increases chances charts run on environments with little
-  # resources, such as Minikube. If you do want to specify resources, uncomment the following
-  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-  # limits:
-  #   cpu: 100m
-  #   memory: 128Mi
-  # requests:
-  #   cpu: 100m
-  #   memory: 128Mi
-
-autoscaling:
-  enabled: false
-  minReplicas: 1
-  maxReplicas: 100
-  targetCPUUtilizationPercentage: 80
-  # targetMemoryUtilizationPercentage: 80
-
-nodeSelector: {}
-
-tolerations: []
-
-affinity: {}
