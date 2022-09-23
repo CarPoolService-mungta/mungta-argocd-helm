@@ -21,7 +21,7 @@ metadata:
   namespace: {{ .Values.namespace }}
 spec:
   hosts:
-    - {{ .Values.istioIngress.front.host }}
+    - "*"
   gateways:
     - {{ .Values.env.gatewayName }}
   http:
