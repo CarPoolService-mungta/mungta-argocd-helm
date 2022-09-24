@@ -68,16 +68,11 @@ spec:
                 secretKeyRef:
                   name: {{ .Values.env.secret.name }}
                   key: db-password
-#            - name: MAIL_USERNAME
-#              valueFrom:
-#                secretKeyRef:
-#                  name: {{ .Values.env.secret.name }}
-#                  key: mail-username
-#            - name: MAIL_PASSWORD
-#              valueFrom:
-#                secretKeyRef:
-#                  name: {{ .Values.env.secret.name }}
-#                  key: mail-password
+      volumes :
+        - name :  {{ .Values.logVolume.name }}
+          hostPath:
+            path: {{ .Values.logVolume.path }}
+            type: {{ .Values.logVolume.type }}
   strategy:
     blueGreen:
       activeService: {{ include "question.fullname" . }}
