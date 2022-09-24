@@ -78,6 +78,14 @@ spec:
                 secretKeyRef:
                   name: {{ .Values.env.secret.name }}
                   key: mail-password
+          volumeMounts :
+            - name: {{ .Values.logVolume.name }}
+              mountPath: {{ .Values.logVolume.path }}
+      volumes :
+        - name :  {{ .Values.logVolume.name }}
+          hostPath:
+            path: {{ .Values.logVolume.path }}
+            type: {{ .Values.logVolume.type }}
 
   strategy:
     blueGreen:
