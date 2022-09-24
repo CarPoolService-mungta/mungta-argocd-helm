@@ -18,10 +18,10 @@ config:
 
 istioIngress:
   front:
-    host: mungta-front
+    host: mungta-front.mungta.svc.cluster.local
     port: 3000
   gateway:
-    host: gateway
+    host: gateway.mungta.svc.cluster.local
     port: 8080
 
 nameOverride: ""
