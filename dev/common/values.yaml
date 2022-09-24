@@ -13,8 +13,8 @@ config:
     userName: bXVuZ3Rh
     password: YW5keGsxMiMk
   mail:
-    userName: bXVuZ3Rha29yQGdtYWlsLmNvbQ==
-    password: ZHVvZ2hjamVhdGhzZWlpaw==
+    userName: bXVuZ3Rhc2VydmljZUBnbWFpbC5jb20=
+    password: cmtoaXlxbW12em5haXJpcQ==
 
 istioIngress:
   front:
