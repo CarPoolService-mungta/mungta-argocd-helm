@@ -40,7 +40,7 @@ env:
 config:
   logLevel: debug
   dbHost: mungta-accusations-db.mysql.database.azure.com
-  kafka: kafka.kafka.svc.cluster.local
+  kafka: kafka.kafka.svc.cluster.local:9092
 
 livenessProbe:
   path: /actuator/health/liveness
