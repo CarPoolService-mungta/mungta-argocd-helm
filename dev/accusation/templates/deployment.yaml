@@ -53,6 +53,11 @@ spec:
                 configMapKeyRef:
                   name: {{ .Values.env.configMap.name }}
                   key: log-level
+            - name: KAFKA_BROKER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.env.configMap.name }}
+                  key: kafka-broker
             - name: DB_HOST
               valueFrom:
                 configMapKeyRef:
@@ -78,6 +83,7 @@ spec:
                 secretKeyRef:
                   name: {{ .Values.env.secret.name }}
                   key: mail-password
+
   strategy:
     blueGreen:
       activeService: {{ include "accusation.fullname" . }}

@@ -6,3 +6,4 @@ metadata:
 data:
   log-level: {{ .Values.config.logLevel }}
   db-host: {{ .Values.config.dbHost }}
+  kafka-broker: {{ .Values.config.kafka }}
