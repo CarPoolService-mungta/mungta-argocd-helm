@@ -4,7 +4,7 @@ metadata:
   name: {{ .Values.fullnameOverride }}
   namespace: {{ .Values.namespace }}
   labels:
-    {{- include "accusation.labels" . | nindent 4 }}
+    {{- include "review.labels" . | nindent 4 }}
 spec:
   scaleTargetRef:
     kind: Rollout
