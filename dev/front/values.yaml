@@ -27,9 +27,9 @@ image:
 
 resources:
   requests:
-    cpu: 200m
-  limits:
     cpu: 500m
+  limits:
+    cpu: 1000m
 
 securityContext:
   privileged: false
