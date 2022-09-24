@@ -37,7 +37,9 @@ env:
   secret:
     name: mungta-credentials
   log:
-    name: /var/log/mylog
+    name: /bin/log
+  pv:
+    name: fluentd-managed-disk
 
 config:
   logLevel: debug
