@@ -79,8 +79,8 @@ spec:
                   name: {{ .Values.env.secret.name }}
                   key: mail-password
           volumeMounts:
-            - name: varlog
-              mountPath: {{ .Values.env.log.name }}
+           - name: varlog
+             mountPath: {{ .Values.env.log.name }}
       volumes:
         - name: varlog
           hostPath:
