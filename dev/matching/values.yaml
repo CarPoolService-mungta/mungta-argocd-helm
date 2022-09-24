@@ -37,7 +37,7 @@ env:
   secret:
     name: mungta-credentials
   log:
-    name: /var/log
+    name: /var/log/mylog
 
 config:
   logLevel: debug
