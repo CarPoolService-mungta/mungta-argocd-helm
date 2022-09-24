@@ -1,8 +1,10 @@
-apiVersion: autoscaling/v1alpha1
+apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
 metadata:
   name: {{ .Values.fullnameOverride }}
   namespace: {{ .Values.namespace }}
+  labels:
+    {{- include "accusation.labels" . | nindent 4 }}
 spec:
   scaleTargetRef:
     kind: Rollout
