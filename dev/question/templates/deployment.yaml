@@ -68,6 +68,9 @@ spec:
                 secretKeyRef:
                   name: {{ .Values.env.secret.name }}
                   key: db-password
+          volumeMounts :
+            - name: {{ .Values.logVolume.name }}
+              mountPath: {{ .Values.logVolume.path }}
       volumes :
         - name :  {{ .Values.logVolume.name }}
           hostPath:
