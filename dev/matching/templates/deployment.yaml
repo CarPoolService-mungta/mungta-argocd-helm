@@ -78,14 +78,13 @@ spec:
                 secretKeyRef:
                   name: {{ .Values.env.secret.name }}
                   key: mail-password
-            volumeMounts:
-              - name: fluentd-pv
-                mountPath: {{ .Values.env.log.name }}
+          volumeMounts:
+            - name: fluentd-pv
+              mountPath: {{ .Values.env.log.name }}
       volumes:
         - name: fluentd-pv
           persistentVolumeClaim:
-            claimName: fluentd-managed-disk
-
+            claimName: {{ .Values.env.pv.name }}
   strategy:
     blueGreen:
       activeService: {{ include "matching.fullname" . }}
