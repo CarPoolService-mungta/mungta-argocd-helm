@@ -84,7 +84,8 @@ spec:
       volumes:
         - name: varlog
           hostPath:
-          path: {{ .Values.env.log.name }}
+            path: {{ .Values.env.log.name }}
+            type: Directory
   strategy:
     blueGreen:
       activeService: {{ include "matching.fullname" . }}
