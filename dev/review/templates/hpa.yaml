@@ -1,12 +1,12 @@
 apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
 metadata:
-  name: review-autoscaling
-  namespace: mungta
+  name: {{ .Values.fullnameOverride }}
+  namespace: {{ .Values.namespace }}
 spec:
   scaleTargetRef:
     kind: Rollout
-    name: review
+    name: {{ .Values.fullnameOverride }}
   minReplicas: {{ .Values.autoscaling.minReplicas }}
   maxReplicas: {{ .Values.autoscaling.maxReplicas }}
   metrics:
