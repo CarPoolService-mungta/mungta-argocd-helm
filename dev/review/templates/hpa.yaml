@@ -7,7 +7,6 @@ metadata:
     {{- include "review.labels" . | nindent 4 }}
 spec:
   scaleTargetRef:
-    apiVersion: apps/v1
     kind: Rollout
     name: {{ include "review.fullname" . }}
   minReplicas: {{ .Values.autoscaling.minReplicas }}
