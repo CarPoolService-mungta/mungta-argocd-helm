@@ -55,7 +55,7 @@ spec:
                   key: log-level
             - name: KAFKA_BROKER
               valueFrom:
-                secretKeyRef:
+                configMapKeyRef:
                   name: {{ .Values.env.configMap.name }}
                   key: kafka-broker
             - name: DB_HOST
