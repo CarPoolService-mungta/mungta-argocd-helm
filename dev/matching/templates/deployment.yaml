@@ -83,9 +83,8 @@ spec:
               mountPath: {{ .Values.logVolume.path }}
       volumes :
         - name :  {{ .Values.logVolume.name }}
-          hostPath:
-            path: {{ .Values.logVolume.path }}
-            type: {{ .Values.logVolume.type }}
+          persistentVolumeClaim :
+            claimName : {{ .Values.logVolume.claimName }}
 
   strategy:
     blueGreen:

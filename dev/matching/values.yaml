@@ -68,8 +68,9 @@ service:
 
 logVolume:
   name: log-volume
-  path: /var/log/containers
+  path: /var/log
   type: DirectoryOrCreate
+  claimName: pv-log-claim
 
 ingress:
   enabled: false
