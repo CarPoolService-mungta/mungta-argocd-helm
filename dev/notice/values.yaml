@@ -62,6 +62,12 @@ service:
   type: ClusterIP
   port: 8080
 
+logVolume:
+  name: log-volume
+  path: /var/log/containers
+  type: DirectoryOrCreate
+
+
 ingress:
   enabled: false
   className: ""
