@@ -71,6 +71,7 @@ logVolume:
   path: /var/log/containers
   type: DirectoryOrCreate
 
+
 ingress:
   enabled: false
   className: ""
