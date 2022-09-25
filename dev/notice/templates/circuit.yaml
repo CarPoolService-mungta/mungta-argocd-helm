@@ -1,0 +1,21 @@
+{{- if .Values.circuit.enabled }}
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: {{ include "notice.fullname" . }}
+  namespace: {{ .Values.namespace }}
+spec:
+  host: {{ include "notice.fullname" . }}
+  trafficPolicy:
+    connectionPool:
+      tcp:
+        maxConnections: {{ .Values.circuit.tcp.connection }}	# 연결 가능한 최대 수
+      http:
+        http1MaxPendingRequests: {{ .Values.circuit.http.maxPending }}	# 요청 보류에 대한 최대 수
+        maxRequestsPerConnection: {{ .Values.circuit.http.connection }}	# 연결 가능한 최대 수
+    outlierDetection:
+      interval: {{ .Values.circuit.interval }}	# 분석 기간
+      consecutive5xxErrors: {{ .Values.circuit.consecutive5xxErrors }}	# 연속 에러 수
+      baseEjectionTime: {{ .Values.circuit.baseEjectionTime }}	# 3분 동안 제외
+      maxEjectionPercent: {{ .Values.circuit.maxEjectionPercent }}	# 모든 인스턴스 수 제거
+{{- end }}
