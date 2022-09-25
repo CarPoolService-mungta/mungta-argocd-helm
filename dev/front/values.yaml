@@ -41,6 +41,18 @@ service:
   type: ClusterIP
   port: 3000
 
+circuit:
+  enabled: false
+  tcp:
+    connection: 10
+  http:
+    maxPending: 5
+    connection: 10
+  interval: 10s
+  consecutive5xxErrors: 3
+  baseEjectionTime: 3m
+  maxEjectionPercent: 100
+
 ingress:
   enabled: false
   className: ""
