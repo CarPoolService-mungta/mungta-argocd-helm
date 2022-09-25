@@ -23,7 +23,7 @@ image:
   repository: mungtaregistry.azurecr.io/mungta/dev/matching-service
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "28"
+  tag: "23"
 
 resources:
   requests:
@@ -68,9 +68,8 @@ service:
 
 logVolume:
   name: log-volume
-  path: /var/log
+  path: /var/log/containers
   type: DirectoryOrCreate
-  claimName: pv-log-claim
 
 ingress:
   enabled: false
