@@ -23,7 +23,7 @@ image:
   repository: mungtaregistry.azurecr.io/mungta/dev/mungta-front
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "85"
+  tag: "86"
 
 resources:
   requests:
